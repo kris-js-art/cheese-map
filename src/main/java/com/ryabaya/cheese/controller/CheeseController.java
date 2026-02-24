@@ -10,18 +10,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor//аннотация которая автоматически создаст конструктор
+@RequiredArgsConstructor
 public class CheeseController {
 
     private final CheeseService cheeseService;
 
-    @GetMapping("/{id}") // с помощтю этой аннотации мы указываем по какому адресу можно что-то получить
-    public ResponseEntity<CheeseDto> getCheeseById(@PathVariable Long id) { // с помощью аннотации PathVariable получить переменную из адреса
-        return ResponseEntity.ok(cheeseService.getCheeseById(id));// возвращаем ответ
+    @GetMapping("/{id}")
+    public ResponseEntity<CheeseDto> getCheeseById(@PathVariable Long id) {
+        return ResponseEntity.ok(cheeseService.getCheeseById(id));
     }
 
     @GetMapping("/name")
-    public ResponseEntity<CheeseDto> getCheeseByName(@RequestParam String name) { // c помощтю rq мы читаем параметр(переменная после вопроса)
+    public ResponseEntity<CheeseDto> getCheeseByName(@RequestParam String name) {
         return ResponseEntity.ok(cheeseService.getCheeseByName(name));
     }
 }
