@@ -1,6 +1,7 @@
 package com.ryabaya.cheese.service;
 
 import com.ryabaya.cheese.dto.CheeseDto;
+import com.ryabaya.cheese.entity.Cheese;
 import com.ryabaya.cheese.mapper.CheeseMapper;
 import com.ryabaya.cheese.repository.InMemoryCheeseRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +16,12 @@ public class CheeseService {
     private final CheeseMapper cheeseMapper;
 
     public CheeseDto getCheeseById(Long id) {
-        return cheeseMapper.toDto(cheeseRepository.findById(id)); // маппер нам сделает NoteDto из Note которая придет с репозитория
+        Cheese cheese = cheeseRepository.findById(id);// получаем сыр из репозитория
+        return cheeseMapper.toDto(cheese); // маппер нам сделает CheeseDto из Cheese которая придет с репозитория
     }
 
     public CheeseDto getCheeseByName(String name) {
-        return cheeseMapper.toDto(cheeseRepository.findByName(name));
+        Cheese cheese = cheeseRepository.findByName(name);
+        return cheeseMapper.toDto(cheese);
     }
 }

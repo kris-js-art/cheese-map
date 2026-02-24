@@ -31,4 +31,4 @@
 ## Качество кода (SonarQube)
 
 Проект проходит регулярный статический анализ кода с использованием **SonarQube** для обеспечения высоких стандартов разработки.
-* **Публичный отчет:** [Посмотреть результаты на SonarCloud](https://sonarcloud.io/project/overview?id=luh-twizzy-sources_cheese)
+* **Публичный отчет:** [Посмотреть результаты на SonarCloud](https://sonarcloud.io/summary/overall?id=kris-js-art_cheese-map&branch=main)

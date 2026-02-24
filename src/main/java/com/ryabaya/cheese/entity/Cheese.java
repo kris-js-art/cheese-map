@@ -5,10 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter//аннотация для создания get методов со всеми полями
+@Setter//аннотация для создания set методов со всеми полями
+@AllArgsConstructor// аннотация для создания конструктора со всеми параметрами
+@NoArgsConstructor// аннотация для создания пустого конструктра
 public class Cheese {
 
     private Long id;
