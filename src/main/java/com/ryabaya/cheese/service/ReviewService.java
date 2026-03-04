@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class ReviewService {
 
+    private static final String REVIEW_NOT_FOUND = "Review not found with id: ";
+
     private final ReviewRepository reviewRepository;
     private final CheeseRepository cheeseRepository;
     private final ReviewMapper reviewMapper;
@@ -39,7 +41,7 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public ReviewResponseDto getReviewById(Long id) {
         Review review = reviewRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Review not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(REVIEW_NOT_FOUND + id));
         return reviewMapper.toResponseDto(review);
     }
 
@@ -47,12 +49,12 @@ public class ReviewService {
     public List<ReviewResponseDto> getReviewsByCheeseId(Long cheeseId) {
         return reviewRepository.findByCheeseId(cheeseId).stream()
                 .map(reviewMapper::toResponseDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public ReviewResponseDto updateReview(Long id, ReviewRequestDto reviewDto) {
         Review review = reviewRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Review not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(REVIEW_NOT_FOUND + id));
 
         reviewMapper.updateEntityFromDto(review, reviewDto);
         Review updatedReview = reviewRepository.save(review);
@@ -61,7 +63,7 @@ public class ReviewService {
 
     public void deleteReview(Long id) {
         Review review = reviewRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Review not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(REVIEW_NOT_FOUND + id));
 
         review.getCheese().getReviews().remove(review);
         reviewRepository.delete(review);

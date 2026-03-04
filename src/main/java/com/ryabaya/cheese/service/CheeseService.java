@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,7 +66,7 @@ public class CheeseService {
     public List<CheeseResponseDto> getAllCheeses() {
         return cheeseRepository.findAll().stream()
                 .map(cheeseMapper::toResponseDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
 
@@ -75,7 +74,7 @@ public class CheeseService {
     public List<CheeseResponseDto> getAllCheesesWithGraph() {
         return cheeseRepository.findAllWithGraph().stream()
                 .map(cheeseMapper::toResponseDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional
@@ -100,7 +99,7 @@ public class CheeseService {
     public List<CheeseResponseDto> findCheesesByProducer(Long producerId) {
         return cheeseRepository.findByProducerId(producerId).stream()
                 .map(cheeseMapper::toResponseDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Transactional

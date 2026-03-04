@@ -20,6 +20,8 @@ import java.util.stream.Collectors;
 @Transactional
 public class CategoryService {
 
+    private static final String CATEGORY_NOT_FOUND = "Category not found with id : ";
+
     private final CategoryRepository categoryRepository;
     private final CheeseRepository cheeseRepository;
     private final CategoryMapper categoryMapper;
@@ -38,14 +40,14 @@ public class CategoryService {
     @Transactional(readOnly = true)
     public CategoryResponseDto getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(CATEGORY_NOT_FOUND + id));
         return categoryMapper.toResponseDto(category);
     }
 
     @Transactional(readOnly = true)
     public CategoryResponseDto getCategoryByName(String name) {
         Category category = categoryRepository.findByName(name)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with name: " + name));
+                .orElseThrow(() -> new ResourceNotFoundException(CATEGORY_NOT_FOUND + name));
         return categoryMapper.toResponseDto(category);
     }
 
@@ -58,7 +60,7 @@ public class CategoryService {
 
     public CategoryResponseDto updateCategory(Long id, CategoryRequestDto categoryDto) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(CATEGORY_NOT_FOUND + id));
 
         categoryMapper.updateEntityFromDto(category, categoryDto);
         Category updatedCategory = categoryRepository.save(category);
@@ -68,7 +70,7 @@ public class CategoryService {
     @Transactional
     public void deleteCategory(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException(CATEGORY_NOT_FOUND + id));
 
         for (Cheese cheese : category.getCheeses()) {
             cheese.getCategories().remove(category);
