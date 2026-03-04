@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class ProducerService {
     public List<ProducerResponseDto> getAllProducers() {
         return producerRepository.findAll().stream()
                 .map(producerMapper::toResponseDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public ProducerResponseDto updateProducer(Long id, ProducerRequestDto producerDto) {

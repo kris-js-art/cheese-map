@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +54,7 @@ public class CategoryService {
     public List<CategoryResponseDto> getAllCategories() {
         return categoryRepository.findAll().stream()
                 .map(categoryMapper::toResponseDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public CategoryResponseDto updateCategory(Long id, CategoryRequestDto categoryDto) {
