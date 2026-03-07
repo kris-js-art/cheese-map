@@ -162,5 +162,20 @@ public class CheeseService {
         return savedCheese;
     }
 
+    @Transactional(readOnly = true)
+    public List<CheeseResponseDto> searchCheesesJpql(String producerCountry, String categoryName, Double maxFats) {
+        return cheeseRepository.findCheesesByCriteria(producerCountry, categoryName, maxFats).stream()
+                .map(cheeseMapper::toResponseDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<CheeseResponseDto> searchCheesesNative(String producerCountry, String categoryName, Double maxFats) {
+        return cheeseRepository.findCheesesByCriteriaNative(producerCountry, categoryName, maxFats).stream()
+                .map(cheeseMapper::toResponseDto)
+                .toList();
+    }
+
+
 
 }

@@ -7,10 +7,10 @@ import com.ryabaya.cheese.exception.ResourceNotFoundException;
 import com.ryabaya.cheese.mapper.ShopMapper;
 import com.ryabaya.cheese.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,10 +34,9 @@ public class ShopService {
     }
 
     @Transactional(readOnly = true)
-    public List<ShopResponseDto> getAllShops() {
-        return shopRepository.findAll().stream()
-                .map(shopMapper::toResponseDto)
-                .toList();
+    public Page<ShopResponseDto> getAllShops(Pageable pageable) {
+        return shopRepository.findAll(pageable)
+                .map(shopMapper::toResponseDto);
     }
 
     public ShopResponseDto updateShop(Long id, ShopRequestDto shopDto) {

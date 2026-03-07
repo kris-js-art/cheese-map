@@ -92,4 +92,24 @@ public class CheeseController {
     public ResponseEntity<List<CheeseResponseDto>> getCheesesByProducer(@PathVariable Long producerId) {
         return ResponseEntity.ok(cheeseService.findCheesesByProducer(producerId));
     }
+
+    @GetMapping("/search/jpql")
+    public ResponseEntity<List<CheeseResponseDto>> searchCheeses(
+            @RequestParam String producerCountry,
+            @RequestParam String categoryName,
+            @RequestParam Double maxFats) {
+
+        List<CheeseResponseDto> cheeses = cheeseService.searchCheesesJpql(producerCountry, categoryName, maxFats);
+        return ResponseEntity.ok(cheeses);
+    }
+
+    @GetMapping("/search/native")
+    public ResponseEntity<List<CheeseResponseDto>> searchCheesesNative(
+            @RequestParam String producerCountry,
+            @RequestParam String categoryName,
+            @RequestParam Double maxFats) {
+
+        List<CheeseResponseDto> cheeses = cheeseService.searchCheesesNative(producerCountry, categoryName, maxFats);
+        return ResponseEntity.ok(cheeses);
+    }
 }
