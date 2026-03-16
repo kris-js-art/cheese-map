@@ -175,7 +175,4 @@ public class CheeseService {
                 .map(cheeseMapper::toResponseDto)
                 .toList();
     }
-
-
-
 }
