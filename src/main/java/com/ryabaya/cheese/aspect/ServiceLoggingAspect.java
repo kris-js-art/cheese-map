@@ -1,6 +1,5 @@
 package com.ryabaya.cheese.aspect;
 
-import com.ryabaya.cheese.exception.InitiatedProblemException;
 import com.ryabaya.cheese.exception.LoggingException;
 import com.ryabaya.cheese.exception.ResourceNotFoundException;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -56,7 +55,7 @@ public class ServiceLoggingAspect {
 
         } catch (Exception e) {
             if (shouldNotWrap(e)) {
-                logger.error("Бизнес-исключение в методе {}: {}", fullMethodName, e.getMessage());
+                logger.warn("Бизнес-исключение в методе {}: {}", fullMethodName, e.getMessage());
                 throw e;
             }
 
@@ -66,7 +65,6 @@ public class ServiceLoggingAspect {
     }
 
     private boolean shouldNotWrap(Exception e) {
-        return e instanceof ResourceNotFoundException
-                || e instanceof InitiatedProblemException;
+        return e instanceof ResourceNotFoundException;
     }
 }

@@ -1,8 +1,8 @@
 package com.ryabaya.cheese.exception;
 
 import com.ryabaya.cheese.exception.response.ErrorResponse;
-import com.ryabaya.cheese.exception.response.ValidationErrorResponse;
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -10,6 +10,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
@@ -22,118 +23,145 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private static final String VALIDATION_FAIL = "Ошибка валидации";
-    private static final String UNEXPECTED_ERROR = "Произошла непредвиденная ошибка";
-    private static final String INVALID_JSON = "Неверный формат JSON запроса";
-    private static final String ENDPOINT_NOT_FOUND = "Эндпоинт не найден";
-    private static final String INVALID_PARAM_FORMAT = "Неверный формат параметра: ";
-
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleResourceNotFound(ResourceNotFoundException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                ex.getMessage(),
-                LocalDateTime.now()
-        );
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
+            ResourceNotFoundException ex, WebRequest request) {
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND.value())
+                .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getDescription(false).replace("uri=", ""))
+                .build();
+
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(InitiatedProblemException.class)
-    public ResponseEntity<ErrorResponse> handleInitiatedProblem(InitiatedProblemException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                ex.getMessage(),
-                LocalDateTime.now()
-        );
+    public ResponseEntity<ErrorResponse> handleInitiatedProblemException(
+            InitiatedProblemException ex, WebRequest request) {
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getDescription(false).replace("uri=", ""))
+                .build();
+
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationErrorResponse> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(
+            MethodArgumentNotValidException ex, WebRequest request) {
 
-        Map<String, List<String>> errors = new HashMap<>();
+        Map<String, List<String>> validationErrors = new HashMap<>();
+
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
             String errorMessage = error.getDefaultMessage();
-            errors.computeIfAbsent(fieldName, k -> new ArrayList<>()).add(errorMessage);
+
+            validationErrors.computeIfAbsent(fieldName, k -> new ArrayList<>()).add(errorMessage);
         });
 
-        ValidationErrorResponse errorResponse = new ValidationErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                VALIDATION_FAIL,
-                LocalDateTime.now(),
-                errors
-        );
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message("Ошибка валидации")
+                .path(request.getDescription(false).replace("uri=", ""))
+                .validationErrors(validationErrors)
+                .build();
+
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ValidationErrorResponse> handleConstraintViolation(
-            ConstraintViolationException ex) {
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(
+            ConstraintViolationException ex, WebRequest request) {
 
-        Map<String, List<String>> errors = new HashMap<>();
+        Map<String, List<String>> validationErrors = new HashMap<>();
+
         ex.getConstraintViolations().forEach(violation -> {
             String fieldName = violation.getPropertyPath().toString();
             String errorMessage = violation.getMessage();
-            errors.computeIfAbsent(fieldName, k -> new ArrayList<>()).add(errorMessage);
+
+            validationErrors.computeIfAbsent(fieldName, k -> new ArrayList<>()).add(errorMessage);
         });
 
-        ValidationErrorResponse errorResponse = new ValidationErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                VALIDATION_FAIL,
-                LocalDateTime.now(),
-                errors
-        );
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message("Ошибка валидации")
+                .path(request.getDescription(false).replace("uri=", ""))
+                .validationErrors(validationErrors)
+                .build();
+
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatch(
-            MethodArgumentTypeMismatchException ex) {
+    public ResponseEntity<ErrorResponse> handleMethodArgumentTypeMismatchException(
+            MethodArgumentTypeMismatchException ex, WebRequest request) {
 
         String requiredType = ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "неизвестный";
-        String message = INVALID_PARAM_FORMAT + ex.getName() + " должен быть типа " + requiredType;
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                message,
-                LocalDateTime.now()
-        );
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message("Неверный формат параметра: " + ex.getName() + " должен быть типа " + requiredType)
+                .path(request.getDescription(false).replace("uri=", ""))
+                .build();
+
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(
-            HttpMessageNotReadableException ex) {
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(
+            HttpMessageNotReadableException ex, WebRequest request) {
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.BAD_REQUEST.value(),
-                INVALID_JSON,
-                LocalDateTime.now()
-        );
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message("Неверный формат JSON запроса")
+                .path(request.getDescription(false).replace("uri=", ""))
+                .build();
+
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(NoResourceFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNoResourceFound(
-            NoResourceFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleNoResourceFoundException(
+            NoResourceFoundException ex, WebRequest request) {
 
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.NOT_FOUND.value(),
-                ENDPOINT_NOT_FOUND,
-                LocalDateTime.now()
-        );
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.NOT_FOUND.value())
+                .error(HttpStatus.NOT_FOUND.getReasonPhrase())
+                .message("Эндпоинт не найден")
+                .path(request.getDescription(false).replace("uri=", ""))
+                .build();
+
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                UNEXPECTED_ERROR + ": " + ex.getMessage(),
-                LocalDateTime.now()
-        );
+    public ResponseEntity<ErrorResponse> handleGenericException(
+            Exception ex, WebRequest request) {
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .message("Произошла непредвиденная ошибка")
+                .path(request.getDescription(false).replace("uri=", ""))
+                .build();
+
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

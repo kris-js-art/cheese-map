@@ -1,5 +1,6 @@
 package com.ryabaya.cheese.controller;
 
+import com.ryabaya.cheese.dto.request.CheeseBulkRequestDto;
 import com.ryabaya.cheese.dto.request.CheeseCreationRequestDto;
 import com.ryabaya.cheese.dto.request.CheeseRequestDto;
 import com.ryabaya.cheese.dto.response.CheeseResponseDto;
@@ -176,6 +177,42 @@ public class CheeseController {
             @Parameter(description = "Максимальное содержание жира", required = true) @RequestParam Double maxFats) {
         List<CheeseResponseDto> cheeses = cheeseService.searchCheesesNative(producerCountry, categoryName, maxFats);
         return ResponseEntity.ok(cheeses);
+    }
+
+    @PostMapping("/{shopId}/{producerId}/bulk/withTx")
+    @Operation(summary = "Массовое создание сыров с транзакцией")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Сыры успешно созданы"),
+            @ApiResponse(responseCode = "400", description = "Ошибка валидации"),
+            @ApiResponse(responseCode = "404", description = "Магазин или производитель не найдены"),
+            @ApiResponse(responseCode = "500", description = "Имитация проблемы - часть данных сохранена/не сохранена")
+    })
+    public ResponseEntity<List<CheeseResponseDto>> bulkCreateCheesesWithTx(
+            @PathVariable Long shopId,
+            @PathVariable Long producerId,
+            @Valid @RequestBody CheeseBulkRequestDto request) {
+        return new ResponseEntity<>(
+                cheeseService.bulkCreateCheesesWithTx(shopId, producerId, request),
+                HttpStatus.CREATED
+        );
+    }
+
+    @PostMapping("/{shopId}/{producerId}/bulk/woTx")
+    @Operation(summary = "Массовое создание сыров без транзакции")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Сыры успешно созданы"),
+            @ApiResponse(responseCode = "400", description = "Ошибка валидации"),
+            @ApiResponse(responseCode = "404", description = "Магазин или производитель не найдены"),
+            @ApiResponse(responseCode = "500", description = "Имитация проблемы - часть данных сохранена/не сохранена")
+    })
+    public ResponseEntity<List<CheeseResponseDto>> bulkCreateCheesesWoTx(
+            @PathVariable Long shopId,
+            @PathVariable Long producerId,
+            @Valid @RequestBody CheeseBulkRequestDto request) {
+        return new ResponseEntity<>(
+                cheeseService.bulkCreateCheesesWoTx(shopId, producerId, request),
+                HttpStatus.CREATED
+        );
     }
 
 }
