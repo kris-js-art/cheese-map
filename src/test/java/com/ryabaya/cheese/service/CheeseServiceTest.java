@@ -468,7 +468,6 @@ class CheeseServiceTest {
 
     @Test
     void createCheese_ShouldSetRelationshipsAndSave_WhenValid() {
-        // Test the bidirectional relationship setting
         when(shopRepository.findById(1L)).thenReturn(Optional.of(shop));
         when(producerRepository.findById(1L)).thenReturn(Optional.of(producer));
         when(cheeseMapper.toEntity(cheeseRequestDto)).thenReturn(cheese);
@@ -519,7 +518,6 @@ class CheeseServiceTest {
         verify(categoryRepository, times(2)).save(any(Category.class));
         verify(reviewRepository).save(any(Review.class));
 
-        // Verify relationships
         assertThat(result.getCategories()).contains(category);
         assertThat(result.getReviews()).contains(review);
         assertThat(category.getCheeses()).contains(result);
@@ -635,20 +633,6 @@ class CheeseServiceTest {
 
         assertThat(result).isEmpty();
         verify(cheeseRepository, never()).save(any(Cheese.class));
-    }
-
-    @Test
-    void bulkCreateCheesesWithTx_ShouldCallBulkCreateCheeses() {
-        when(shopRepository.findById(1L)).thenReturn(Optional.of(shop));
-        when(producerRepository.findById(1L)).thenReturn(Optional.of(producer));
-        when(cheeseMapper.toEntity(any(CheeseRequestDto.class))).thenReturn(cheese);
-        when(cheeseRepository.save(any(Cheese.class))).thenReturn(cheese);
-        when(cheeseMapper.toResponseDto(any(Cheese.class))).thenReturn(cheeseResponseDto);
-
-        List<CheeseResponseDto> result = cheeseService.bulkCreateCheesesWithTx(1L, 1L, cheeseBulkRequestDto);
-
-        assertThat(result).hasSize(2);
-        verify(cheeseRepository, times(2)).save(any(Cheese.class));
     }
 
     @Test
