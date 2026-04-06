@@ -24,7 +24,15 @@ public class ServiceLoggingAspect {
     public void serviceMethods() {
     }
 
-    @Around("serviceMethods()")
+    @Pointcut("!within(com.ryabaya.cheese.service.RaceConditionDemoService)")
+    public void excludeRaceConditionDemo() {
+    }
+
+    @Pointcut("!within(com.ryabaya.cheese.service.CounterService)")
+    public void excludeCounterService() {
+    }
+
+    @Around("serviceMethods() && excludeRaceConditionDemo() && excludeCounterService()")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String methodName = joinPoint.getSignature().getName();

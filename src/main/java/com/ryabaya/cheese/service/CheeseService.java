@@ -12,6 +12,8 @@ import com.ryabaya.cheese.entity.Shop;
 import com.ryabaya.cheese.exception.InitiatedProblemException;
 import com.ryabaya.cheese.exception.ResourceNotFoundException;
 import com.ryabaya.cheese.mapper.CheeseMapper;
+import com.ryabaya.cheese.entity.AsyncTask;
+import com.ryabaya.cheese.entity.AsyncTaskStatus;
 import com.ryabaya.cheese.repository.CategoryRepository;
 import com.ryabaya.cheese.repository.CheeseRepository;
 import com.ryabaya.cheese.repository.ProducerRepository;
@@ -21,8 +23,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -34,6 +39,8 @@ public class CheeseService {
     private final ShopRepository shopRepository;
     private final CheeseMapper cheeseMapper;
     private final ReviewRepository reviewRepository;
+    private final AsyncTaskStorage asyncTaskStorage;
+    private final AsyncCheeseExecutorService asyncCheeseExecutorService;
 
     @Transactional
     public CheeseResponseDto createCheese(Long shopId, Long producerId, CheeseRequestDto cheeseDto) {
@@ -192,6 +199,33 @@ public class CheeseService {
             Long producerId,
             CheeseBulkRequestDto bulkRequestDto) {
         return bulkCreateCheeses(shopId, producerId, bulkRequestDto);
+    }
+
+    public String createCheesesAsync(
+            Long shopId,
+            Long producerId,
+            CheeseBulkRequestDto request) {
+        String taskId = UUID.randomUUID().toString();
+
+        AsyncTask task = AsyncTask.builder()
+                .taskId(taskId)
+                .status(AsyncTaskStatus.PENDING)
+                .startTime(LocalDateTime.now())
+                .progress(0)
+                .build();
+
+        asyncTaskStorage.saveTask(task);
+        asyncCheeseExecutorService.executeCheesesCreation(taskId, shopId, producerId, request.getCheeses());
+
+        return taskId;
+    }
+
+    public AsyncTask getCheeseTaskStatus(String taskId) {
+        return asyncTaskStorage.getTask(taskId);
+    }
+
+    public Map<String, AsyncTask> getAllAsyncTasks() {
+        return asyncTaskStorage.getAllTasks();
     }
 
     private List<CheeseResponseDto> bulkCreateCheeses(
