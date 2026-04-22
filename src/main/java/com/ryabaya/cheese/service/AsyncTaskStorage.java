@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class AsyncTaskStorage {
+public class AsyncTaskStorage { // класс работает как репозиторий для асинхронных задач
 
     private final Map<String, AsyncTask> taskStatuses = new ConcurrentHashMap<>();
 

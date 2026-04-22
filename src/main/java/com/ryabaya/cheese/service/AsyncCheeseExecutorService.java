@@ -21,7 +21,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AsyncCheeseExecutorService {
+public class AsyncCheeseExecutorService {// сервис для выполнения асинхронной задачи
 
     private final AsyncTaskStorage asyncTaskStorage;
     private final CheeseRepository cheeseRepository;
@@ -29,6 +29,7 @@ public class AsyncCheeseExecutorService {
     private final ProducerRepository producerRepository;
     private final CheeseMapper cheeseMapper;
 
+    // метод для создания сыра
     @Async
     public void executeCheesesCreation(
             String taskId,
@@ -76,7 +77,7 @@ public class AsyncCheeseExecutorService {
         }
     }
 
-    private void sleepWithInterruptionHandling(AsyncTask task) {
+    private void sleepWithInterruptionHandling(AsyncTask task) { // метод для создания задержки после создания каждого сыра
         try {
             Thread.sleep(6000);
         } catch (InterruptedException e) {

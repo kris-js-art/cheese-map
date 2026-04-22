@@ -32,6 +32,7 @@ public class ServiceLoggingAspect {
     public void excludeCounterService() {
     }
 
+
     @Around("serviceMethods() && excludeRaceConditionDemo() && excludeCounterService()")
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         String className = joinPoint.getTarget().getClass().getSimpleName();
