@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: cheese-db
+    network_mode: host
+    environment:
+      POSTGRES_DB: chesov
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cheese-backend
+    depends_on:
+      - db
+    network_mode: host
+    environment:
+      DB_URL: jdbc:postgresql://127.0.0.1:5432/chesov
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cheese-frontend
+    depends_on:
+      - backend
+    network_mode: host
+
+volumes:
+  postgres_data:

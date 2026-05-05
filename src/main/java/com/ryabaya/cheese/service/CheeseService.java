@@ -20,6 +20,8 @@ import com.ryabaya.cheese.repository.ProducerRepository;
 import com.ryabaya.cheese.repository.ReviewRepository;
 import com.ryabaya.cheese.repository.ShopRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,6 +79,12 @@ public class CheeseService {
         return cheeseRepository.findAll().stream()
                 .map(cheeseMapper::toResponseDto)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CheeseResponseDto> getCheesesPage(Pageable pageable) {
+        return cheeseRepository.findAll(pageable)
+                .map(cheeseMapper::toResponseDto);
     }
 
 

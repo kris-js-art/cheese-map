@@ -12,6 +12,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -109,6 +113,21 @@ public class CheeseController {
     @ApiResponse(responseCode = "200", description = "Список сыров получен")
     public ResponseEntity<List<CheeseResponseDto>> getAllCheeses() {
         return ResponseEntity.ok(cheeseService.getAllCheeses());
+    }
+
+    @GetMapping("/paged")
+    @Operation(summary = "Получить сыры с пагинацией")
+    @ApiResponse(responseCode = "200", description = "Страница сыров получена")
+    public ResponseEntity<Page<CheeseResponseDto>> getCheesesPage(
+            @Parameter(description = "Номер страницы") @RequestParam(defaultValue = "0") int page,
+            @Parameter(description = "Размер страницы") @RequestParam(defaultValue = "10") int size,
+            @Parameter(description = "Поле для сортировки") @RequestParam(defaultValue = "name") String sortBy,
+            @Parameter(description = "Направление сортировки (true - возрастание, false - убывание)")
+            @RequestParam(defaultValue = "true") boolean ascending
+    ) {
+        Sort sort = ascending ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return ResponseEntity.ok(cheeseService.getCheesesPage(pageable));
     }
 
     @GetMapping("/graph")
