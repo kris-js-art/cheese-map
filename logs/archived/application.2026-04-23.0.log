@@ -1,0 +1,221 @@
+2026-04-23 03:22:45.454 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheesesWithGraph с аргументами: []
+2026-04-23 03:22:45.849 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheesesWithGraph выполнился за 395 мс
+2026-04-23 03:34:43.123 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=12m11s658ms).
+2026-04-23 03:50:53.522 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m40s384ms).
+2026-04-23 04:06:48.461 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s938ms).
+2026-04-23 04:23:13.412 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s942ms).
+2026-04-23 04:39:09.155 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m55s744ms).
+2026-04-23 04:55:05.833 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m56s678ms).
+2026-04-23 05:11:30.788 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s943ms).
+2026-04-23 05:23:45.444 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=12m14s656ms).
+2026-04-23 05:40:10.404 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s949ms).
+2026-04-23 05:56:05.353 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s949ms).
+2026-04-23 06:12:30.346 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s982ms).
+2026-04-23 06:24:44.299 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=12m13s953ms).
+2026-04-23 06:41:09.275 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s964ms).
+2026-04-23 06:57:04.265 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s990ms).
+2026-04-23 07:13:29.249 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s981ms).
+2026-04-23 07:26:38.320 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=12m39s59ms).
+2026-04-23 07:42:33.253 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s933ms).
+2026-04-23 07:58:50.077 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m46s810ms).
+2026-04-23 08:14:45.054 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s978ms).
+2026-04-23 08:22:43.019 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=7m57s964ms).
+2026-04-23 13:09:05.215 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:09:05.454 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 239 мс
+2026-04-23 13:09:05.506 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:09:05.507 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 1 мс
+2026-04-23 13:09:05.551 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:09:05.579 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 28 мс
+2026-04-23 13:09:05.589 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:09:05.591 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 2 мс
+2026-04-23 13:09:05.599 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:09:05.605 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 6 мс
+2026-04-23 13:09:15.013 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.createProducer с аргументами: [ProducerRequestDto(name=ИП «Сырная история», country=Беларусь, description=)]
+2026-04-23 13:09:15.039 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.createProducer выполнился за 26 мс
+2026-04-23 13:09:15.069 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:09:15.084 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 14 мс
+2026-04-23 13:09:15.094 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:09:15.096 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 1 мс
+2026-04-23 13:09:15.103 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:09:15.105 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 1 мс
+2026-04-23 13:09:15.112 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:09:15.114 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 2 мс
+2026-04-23 13:09:15.121 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:09:15.124 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 2 мс
+2026-04-23 13:10:52.238 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.createShop с аргументами: [ShopRequestDto(name=СырПыр, address=г. Пинск, Брестская обл., phone=80335684324)]
+2026-04-23 13:10:52.253 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.createShop выполнился за 15 мс
+2026-04-23 13:10:52.265 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:10:52.288 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 22 мс
+2026-04-23 13:10:52.296 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:10:52.296 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 0 мс
+2026-04-23 13:10:52.303 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:10:52.306 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 2 мс
+2026-04-23 13:10:52.313 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:10:52.314 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 1 мс
+2026-04-23 13:10:52.319 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:10:52.323 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:11:56.882 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.createCheese с аргументами: [11, 11, CheeseRequestDto(name=Палешук, fats=45.0, description=Мягкий сыр с мытой коркой, price=28.99)]
+2026-04-23 13:11:56.920 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.createCheese выполнился за 37 мс
+2026-04-23 13:11:56.932 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:11:56.955 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 22 мс
+2026-04-23 13:11:56.962 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:11:56.962 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 0 мс
+2026-04-23 13:11:56.970 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:11:56.973 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:11:56.979 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:11:56.980 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 1 мс
+2026-04-23 13:11:56.989 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:11:56.992 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:11:59.606 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheesesWithGraph с аргументами: []
+2026-04-23 13:11:59.630 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheesesWithGraph выполнился за 24 мс
+2026-04-23 13:13:32.398 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:13:32.423 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 24 мс
+2026-04-23 13:13:32.439 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:13:32.440 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 0 мс
+2026-04-23 13:13:32.447 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:13:32.451 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:13:32.468 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:13:32.469 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 1 мс
+2026-04-23 13:13:32.475 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:13:32.479 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 4 мс
+2026-04-23 13:14:38.571 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.createCheese с аргументами: [2, 6, CheeseRequestDto(name=Тёткин каприз, fats=50.0, description=Белоснежная, рыхлая мякоть пронизана ярко-синими прожилками, price=40.0)]
+2026-04-23 13:14:38.599 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.createCheese выполнился за 28 мс
+2026-04-23 13:14:38.620 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:14:38.636 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 16 мс
+2026-04-23 13:14:38.656 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:14:38.657 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 1 мс
+2026-04-23 13:14:38.665 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:14:38.668 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:14:38.675 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:14:38.677 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 2 мс
+2026-04-23 13:14:38.682 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:14:38.685 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:14:40.500 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheesesWithGraph с аргументами: []
+2026-04-23 13:14:40.522 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheesesWithGraph выполнился за 21 мс
+2026-04-23 13:15:31.015 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:15:31.074 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 59 мс
+2026-04-23 13:15:31.088 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:15:31.088 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 0 мс
+2026-04-23 13:15:31.102 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:15:31.107 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 5 мс
+2026-04-23 13:15:31.115 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:15:31.118 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 2 мс
+2026-04-23 13:15:31.144 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:15:31.154 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 10 мс
+2026-04-23 13:17:36.492 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.createCheese с аргументами: [6, 5, CheeseRequestDto(name=Барышня с плесенью, fats=45.0, description=Белоснежный, рассыпчатый у края, чуть липкий в середине, price=49.99)]
+2026-04-23 13:17:36.509 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.createCheese выполнился за 17 мс
+2026-04-23 13:17:36.522 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:17:36.542 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 19 мс
+2026-04-23 13:17:36.554 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:17:36.555 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 0 мс
+2026-04-23 13:17:36.571 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:17:36.575 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:17:36.581 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:17:36.583 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 1 мс
+2026-04-23 13:17:36.590 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:17:36.593 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:17:40.857 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheesesWithGraph с аргументами: []
+2026-04-23 13:17:40.892 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheesesWithGraph выполнился за 34 мс
+2026-04-23 13:17:48.209 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:17:48.239 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 30 мс
+2026-04-23 13:17:48.248 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:17:48.248 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 0 мс
+2026-04-23 13:17:48.258 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:17:48.261 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 2 мс
+2026-04-23 13:17:48.266 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:17:48.267 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 1 мс
+2026-04-23 13:17:48.272 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:17:48.274 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 1 мс
+2026-04-23 13:18:15.260 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.createCategory с аргументами: [14, CategoryRequestDto(name=С плесенью, description=)]
+2026-04-23 13:18:15.284 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.createCategory выполнился за 24 мс
+2026-04-23 13:18:15.298 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:18:15.339 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 41 мс
+2026-04-23 13:18:15.345 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:18:15.345 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 0 мс
+2026-04-23 13:18:15.350 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:18:15.352 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 2 мс
+2026-04-23 13:18:15.356 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:18:15.357 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 1 мс
+2026-04-23 13:18:15.362 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:18:15.365 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:18:27.088 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.createCategory с аргументами: [13, CategoryRequestDto(name=С плесенью, description=)]
+2026-04-23 13:18:27.095 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.createCategory выполнился за 7 мс
+2026-04-23 13:18:27.111 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:18:27.149 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 38 мс
+2026-04-23 13:18:27.159 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:18:27.159 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 0 мс
+2026-04-23 13:18:27.168 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:18:27.171 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:18:27.178 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:18:27.180 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 2 мс
+2026-04-23 13:18:27.192 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:18:27.196 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 4 мс
+2026-04-23 13:18:28.548 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheesesWithGraph с аргументами: []
+2026-04-23 13:18:28.563 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheesesWithGraph выполнился за 14 мс
+2026-04-23 13:18:45.879 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:18:45.910 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 31 мс
+2026-04-23 13:18:45.927 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:18:45.928 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 0 мс
+2026-04-23 13:18:45.937 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:18:45.941 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:18:45.947 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:18:45.949 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 1 мс
+2026-04-23 13:18:45.959 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:18:45.963 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 3 мс
+2026-04-23 13:19:05.973 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheesesWithGraph с аргументами: []
+2026-04-23 13:19:06.000 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheesesWithGraph выполнился за 26 мс
+2026-04-23 13:19:10.598 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:19:10.675 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 77 мс
+2026-04-23 13:19:10.684 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:19:10.685 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 0 мс
+2026-04-23 13:19:10.693 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:19:10.699 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 6 мс
+2026-04-23 13:19:10.706 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:19:10.708 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 2 мс
+2026-04-23 13:19:10.714 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:19:10.717 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 2 мс
+2026-04-23 13:19:24.340 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheesesWithGraph с аргументами: []
+2026-04-23 13:19:24.456 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheesesWithGraph выполнился за 116 мс
+2026-04-23 13:19:37.106 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheeses с аргументами: []
+2026-04-23 13:19:37.161 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheeses выполнился за 54 мс
+2026-04-23 13:19:37.168 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ProducerService.getAllProducers с аргументами: []
+2026-04-23 13:19:37.168 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ProducerService.getAllProducers выполнился за 0 мс
+2026-04-23 13:19:37.176 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 200, sort: id: ASC]]
+2026-04-23 13:19:37.181 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 4 мс
+2026-04-23 13:19:37.190 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CategoryService.getAllCategories с аргументами: []
+2026-04-23 13:19:37.191 [http-nio-8080-exec-8] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CategoryService.getAllCategories выполнился за 1 мс
+2026-04-23 13:19:37.196 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:19:37.202 [http-nio-8080-exec-9] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 5 мс
+2026-04-23 13:19:39.373 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 1, size 5, sort: id: ASC]]
+2026-04-23 13:19:39.379 [http-nio-8080-exec-10] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 6 мс
+2026-04-23 13:19:40.562 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 2, size 5, sort: id: ASC]]
+2026-04-23 13:19:40.566 [http-nio-8080-exec-1] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 4 мс
+2026-04-23 13:19:41.422 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 1, size 5, sort: id: ASC]]
+2026-04-23 13:19:41.429 [http-nio-8080-exec-2] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 6 мс
+2026-04-23 13:19:45.223 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: ShopService.getAllShops с аргументами: [Page request [number: 0, size 5, sort: id: ASC]]
+2026-04-23 13:19:45.228 [http-nio-8080-exec-3] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод ShopService.getAllShops выполнился за 4 мс
+2026-04-23 15:41:21.709 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheesesWithGraph с аргументами: []
+2026-04-23 15:41:21.867 [http-nio-8080-exec-4] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheesesWithGraph выполнился за 157 мс
+2026-04-23 15:56:46.929 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m29s817ms).
+2026-04-23 16:12:16.650 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m29s721ms).
+2026-04-23 16:14:14.060 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=1m27s404ms).
+2026-04-23 17:45:59.279 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheesesWithGraph с аргументами: []
+2026-04-23 17:45:59.431 [http-nio-8080-exec-5] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheesesWithGraph выполнился за 152 мс
+2026-04-23 17:46:37.846 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=52s858ms).
+2026-04-23 18:03:39.934 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m55s822ms).
+2026-04-23 18:20:08.672 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m58s728ms).
+2026-04-23 18:36:34.556 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s966ms).
+2026-04-23 18:53:21.877 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m47s306ms).
+2026-04-23 19:08:29.868 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=14m37s983ms).
+2026-04-23 20:37:07.608 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheesesWithGraph с аргументами: []
+2026-04-23 20:37:07.832 [http-nio-8080-exec-6] DEBUG c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheesesWithGraph выполнился за 225 мс
+2026-04-23 20:52:44.507 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m43s706ms).
+2026-04-23 21:09:41.075 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s921ms).
+2026-04-23 21:26:27.111 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m9s750ms).
+2026-04-23 22:54:05.906 [http-nio-8080-exec-7] DEBUG c.r.c.aspect.ServiceLoggingAspect - Выполнение метода: CheeseService.getAllCheesesWithGraph с аргументами: []
+2026-04-23 22:54:06.612 [http-nio-8080-exec-7] INFO  c.r.c.aspect.ServiceLoggingAspect - Метод CheeseService.getAllCheesesWithGraph выполнился за 706 мс
+2026-04-23 22:54:53.029 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=54s883ms).
+2026-04-23 23:10:47.946 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s918ms).
+2026-04-23 23:27:12.855 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m54s899ms).
+2026-04-23 23:30:20.434 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=2m7s553ms).
+2026-04-23 23:46:16.091 [HikariPool-1:housekeeper] WARN  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Thread starvation or clock leap detected (housekeeper delta=15m55s657ms).
