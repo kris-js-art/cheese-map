@@ -175,7 +175,6 @@ jobs:
             exit 1
           fi
 
-
           echo "Healthcheck URL: ${APP_HEALTHCHECK_URL}"
 
           for attempt in {1..30}; do
