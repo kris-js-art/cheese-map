@@ -1,13 +1,15 @@
 ﻿import { useEffect, useMemo, useState } from "react";
 import cheeseImages from "./data/cheeseImages.json";
 
-const API_BASE = import.meta.env.VITE_API_BASE || "";
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "";
 const IMAGE_OVERRIDES_KEY = "cheese_image_overrides_v1";
 const FALLBACK_CHEESE_IMAGE =
   "data:image/svg+xml;utf8," +
   encodeURIComponent(
     "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0%' stop-color='#f9efe0'/><stop offset='100%' stop-color='#f5d39f'/></linearGradient></defs><rect width='800' height='500' fill='url(#g)'/><circle cx='220' cy='170' r='26' fill='#e8b86d'/><circle cx='360' cy='230' r='18' fill='#e8b86d'/><circle cx='520' cy='160' r='24' fill='#e8b86d'/><path d='M90 390 L700 390 L625 130 Z' fill='#ffcc73' stroke='#d39b3f' stroke-width='8'/></svg>"
   );
+const CATALOG_PAGE_SIZE = 4;
+const ADMIN_CHEESES_PAGE_SIZE = 4;
 
 const emptyCheeseForm = {
   id: "",
@@ -171,10 +173,10 @@ function App() {
         </div>
         <div className="mode-switch">
           <button type="button" className={mode === "store" ? "active" : ""} onClick={() => setMode("store")}>
-            Покупатель
+            Каталог
           </button>
           <button type="button" className={mode === "admin" ? "active" : ""} onClick={() => setMode("admin")}>
-            Администратор
+            Управление
           </button>
         </div>
       </header>
@@ -196,6 +198,7 @@ function StoreFront({ showAlert, imageOverrides }) {
   const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [catalogPage, setCatalogPage] = useState(0);
   const [expandedCheeseId, setExpandedCheeseId] = useState(null);
   const [reviewsByCheese, setReviewsByCheese] = useState({});
   const [reviewForms, setReviewForms] = useState({});
@@ -242,8 +245,26 @@ function StoreFront({ showAlert, imageOverrides }) {
           categoryFilter === "all" || (cheese.categories ?? []).some((category) => category.name === categoryFilter);
         return matchQuery && matchCategory;
       })
-      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""));
+      .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "", "ru", { sensitivity: "base" }));
   }, [cheeses, query, categoryFilter]);
+
+  const catalogTotalPages = Math.max(Math.ceil(visibleCheeses.length / CATALOG_PAGE_SIZE), 1);
+
+  const visibleCheesesPage = useMemo(() => {
+    const start = catalogPage * CATALOG_PAGE_SIZE;
+    return visibleCheeses.slice(start, start + CATALOG_PAGE_SIZE);
+  }, [visibleCheeses, catalogPage]);
+
+  useEffect(() => {
+    setCatalogPage(0);
+  }, [query, categoryFilter]);
+
+  useEffect(() => {
+    const lastPage = Math.max(catalogTotalPages - 1, 0);
+    if (catalogPage > lastPage) {
+      setCatalogPage(lastPage);
+    }
+  }, [catalogPage, catalogTotalPages]);
 
   const openReviews = async (cheeseId) => {
     const nextId = expandedCheeseId === cheeseId ? null : cheeseId;
@@ -314,8 +335,9 @@ function StoreFront({ showAlert, imageOverrides }) {
           {error ? <p className="state error">{error}</p> : null}
         </div>
 
+        {visibleCheeses.length === 0 ? <p className="state">Ничего не найдено</p> : null}
         <div className="cards">
-          {visibleCheeses.map((cheese) => {
+          {visibleCheesesPage.map((cheese) => {
             const isOpen = expandedCheeseId === cheese.id;
             const form = reviewForms[cheese.id] ?? emptyReviewForm;
             const reviews = reviewsByCheese[cheese.id] ?? cheese.reviews ?? [];
@@ -332,15 +354,17 @@ function StoreFront({ showAlert, imageOverrides }) {
                     event.currentTarget.src = FALLBACK_CHEESE_IMAGE;
                   }}
                 />
-                <h3>{cheese.name}</h3>
+                <div className="cheese-title-row">
+                  <h3>{cheese.name}</h3>
+                  <div className="tags">
+                    {(cheese.categories ?? []).map((category) => (
+                      <span key={category.id ?? category.name}>{category.name}</span>
+                    ))}
+                  </div>
+                </div>
                 <p className="desc">{cheese.description || "Описание is not available yet."}</p>
                 <p className="meta">Жирность: {cheese.fats}%</p>
                 <p className="meta">Производитель: {cheese.producer?.name ?? "Не указан"}</p>
-                <div className="tags">
-                  {(cheese.categories ?? []).map((category) => (
-                    <span key={category.id ?? category.name}>{category.name}</span>
-                  ))}
-                </div>
                 <div className="buy-row">
                   <strong>{Number(cheese.price || 0).toFixed(2)} BYN</strong>
                   <button type="button" className="ghost" onClick={() => openReviews(cheese.id)}>
@@ -392,6 +416,29 @@ function StoreFront({ showAlert, imageOverrides }) {
             );
           })}
         </div>
+        <div className="shops-pagination-header">
+          <p className="state">
+            Страница {catalogPage + 1} из {catalogTotalPages}
+          </p>
+          <div className="shops-pagination-actions">
+            <button
+              type="button"
+              className="ghost"
+              disabled={loading || catalogPage <= 0}
+              onClick={() => setCatalogPage((prev) => Math.max(prev - 1, 0))}
+            >
+              Назад
+            </button>
+            <button
+              type="button"
+              className="ghost"
+              disabled={loading || catalogPage + 1 >= catalogTotalPages}
+              onClick={() => setCatalogPage((prev) => Math.min(prev + 1, catalogTotalPages - 1))}
+            >
+              Вперед
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -408,11 +455,21 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
   const [producerForm, setProducerForm] = useState(emptyProducerForm);
   const [shopForm, setShopForm] = useState(emptyShopForm);
   const [categoryForm, setCategoryForm] = useState(emptyCategoryForm);
+  const [pagedCheeses, setPagedCheeses] = useState([]);
+  const [cheesesPage, setCheesesPage] = useState(0);
+  const [cheesesTotalPages, setCheesesTotalPages] = useState(0);
+  const [cheesesPageLoading, setCheesesPageLoading] = useState(false);
   const [pagedShops, setPagedShops] = useState([]);
   const [shopsPage, setShopsPage] = useState(0);
   const [shopsTotalPages, setShopsTotalPages] = useState(0);
   const [shopsPageLoading, setShopsPageLoading] = useState(false);
   const [cheeseImageUrl, setCheeseImageUrl] = useState("");
+  const [adminModal, setAdminModal] = useState(null);
+  const [showQuickProducer, setShowQuickProducer] = useState(false);
+  const [showQuickShop, setShowQuickShop] = useState(false);
+  const [showNewCategoryForm, setShowNewCategoryForm] = useState(false);
+  const [newCategoryForCheese, setNewCategoryForCheese] = useState({ name: "", description: "" });
+  const [selectedCategoryForCheeseIds, setSelectedCategoryForCheeseIds] = useState([]);
 
   const uniqueCategories = useMemo(() => {
     const seen = new Set();
@@ -425,6 +482,32 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
       return true;
     });
   }, [categories]);
+
+  const mergeUniqueCategoryDrafts = (categoryDrafts) => {
+    const seen = new Set();
+    return categoryDrafts.filter((category) => {
+      const name = (category?.name ?? "").trim();
+      if (!name) {
+        return false;
+      }
+      const key = name.toLowerCase();
+      if (seen.has(key)) {
+        return false;
+      }
+      seen.add(key);
+      return true;
+    });
+  };
+
+  const getCurrentCategoryDrafts = () => {
+    const selectedCategoryTemplates = uniqueCategories.filter((category) =>
+      selectedCategoryForCheeseIds.includes(String(category.id))
+    );
+    return mergeUniqueCategoryDrafts(selectedCategoryTemplates.map((category) => ({
+      name: (category.name ?? "").trim(),
+      description: (category.description ?? "").trim()
+    })));
+  };
 
   const isИзменитьingCheese = Boolean(cheeseForm.id);
 
@@ -447,14 +530,53 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
     }
   };
 
-  const loadAdminData = async () => {
+  const loadCheesesPage = async (pageNumber) => {
+    setCheesesPageLoading(true);
+    try {
+      const page = await apiRequest(
+        `/api/cheeses/paged?page=${pageNumber}&size=${ADMIN_CHEESES_PAGE_SIZE}&sortBy=name&ascending=true`
+      );
+      const content = page?.content ?? [];
+      const meta = page?.page ?? null;
+      const currentPage = page?.number ?? meta?.number ?? 0;
+      const totalPages = page?.totalPages ?? meta?.totalPages ?? 0;
+
+      if (totalPages > 0 && pageNumber >= totalPages) {
+        const lastPage = Math.max(totalPages - 1, 0);
+        const fallback = await apiRequest(
+          `/api/cheeses/paged?page=${lastPage}&size=${ADMIN_CHEESES_PAGE_SIZE}&sortBy=name&ascending=true`
+        );
+        const fallbackMeta = fallback?.page ?? null;
+        setPagedCheeses(fallback?.content ?? []);
+        setCheesesPage(fallback?.number ?? fallbackMeta?.number ?? lastPage);
+        setCheesesTotalPages(fallback?.totalPages ?? fallbackMeta?.totalPages ?? totalPages);
+        return;
+      }
+
+      setPagedCheeses(content);
+      setCheesesPage(currentPage);
+      setCheesesTotalPages(totalPages);
+    } catch (err) {
+      setPagedCheeses([]);
+      setError((prev) => [prev, `Cheeses pagination: ${err.message}`].filter(Boolean).join(" | "));
+    } finally {
+      setCheesesPageLoading(false);
+    }
+  };
+
+  const loadAdminData = async (targetCheesesPage = cheesesPage) => {
     setLoading(true);
     setError("");
     const errors = [];
 
     try {
-      const list = await apiRequest("/api/cheeses");
-      setCheeses(list ?? []);
+      try {
+        const listWithGraph = await apiRequest("/api/cheeses/graph");
+        setCheeses(listWithGraph ?? []);
+      } catch {
+        const fallbackList = await apiRequest("/api/cheeses");
+        setCheeses(fallbackList ?? []);
+      }
     } catch (err) {
       setCheeses([]);
       errors.push(`Cheeses: ${err.message}`);
@@ -486,12 +608,23 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
 
     setError(errors.join(" | "));
     setLoading(false);
+    await loadCheesesPage(targetCheesesPage);
     await loadShopsPage(0);
   };
 
   useEffect(() => {
     loadAdminData();
   }, []);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(async () => {
+      loadAdminData(cheesesPage);
+    }, 15000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [cheesesPage]);
 
   const saveCheese = async (event) => {
     event.preventDefault();
@@ -505,13 +638,54 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
       };
 
       if (isИзменитьingCheese) {
-        const updated = await apiRequest(`/api/cheeses/${cheeseForm.id}`, {
-          method: "PUT",
-          body: JSON.stringify(payload)
-        });
-        const updatedId = updated?.id ?? cheeseForm.id;
-        saveImageOverride(updatedId, cheeseImageUrl);
-        showAlert("Сыр обновлен");
+        if (!cheeseForm.producerId || !cheeseForm.shopId) {
+          throw new Error("Выберите производителя и магазин для обновления сыра.");
+        }
+        const oldCheeseId = Number(cheeseForm.id);
+        let replacementCheeseId = null;
+        try {
+          const replacement = await apiRequest(`/api/cheeses/${cheeseForm.shopId}/${cheeseForm.producerId}`, {
+            method: "POST",
+            body: JSON.stringify(payload)
+          });
+          if (!replacement?.id) {
+            throw new Error("Не удалось создать обновленную версию сыра.");
+          }
+          replacementCheeseId = replacement.id;
+          saveImageOverride(replacementCheeseId, cheeseImageUrl);
+
+          const categoriesToAttach = getCurrentCategoryDrafts();
+          for (const categoryPayload of categoriesToAttach) {
+            await apiRequest(`/api/categories/${replacementCheeseId}`, {
+              method: "POST",
+              body: JSON.stringify(categoryPayload)
+            });
+          }
+
+          const oldReviews = (await apiRequest(`/api/reviews/cheese/${oldCheeseId}`)) ?? [];
+          for (const review of oldReviews) {
+            await apiRequest(`/api/reviews/cheese/${replacementCheeseId}`, {
+              method: "POST",
+              body: JSON.stringify({
+                author: (review.author ?? "").trim(),
+                rating: Number(review.rating),
+                comment: (review.comment ?? "").trim()
+              })
+            });
+          }
+
+          await apiRequest(`/api/cheeses/${oldCheeseId}`, { method: "DELETE" });
+          showAlert("Сыр обновлен");
+        } catch (updateError) {
+          if (replacementCheeseId) {
+            try {
+              await apiRequest(`/api/cheeses/${replacementCheeseId}`, { method: "DELETE" });
+            } catch {
+              // ignore cleanup error; original error is more important
+            }
+          }
+          throw updateError;
+        }
       } else {
         if (!cheeseForm.producerId || !cheeseForm.shopId) {
           throw new Error("Выбрать producer and shop before creating cheese.");
@@ -522,13 +696,137 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
         });
         if (created?.id) {
           saveImageOverride(created.id, cheeseImageUrl);
+          const uniqueCategoriesToAttach = getCurrentCategoryDrafts();
+
+          for (const categoryPayload of uniqueCategoriesToAttach) {
+            await apiRequest(`/api/categories/${created.id}`, {
+              method: "POST",
+              body: JSON.stringify(categoryPayload)
+            });
+          }
+
+          if (uniqueCategoriesToAttach.length > 0) {
+            showAlert("Сыр и категории добавлены");
+          } else {
+            showAlert("Сыр добавлен");
+          }
+        } else {
+          showAlert("Сыр добавлен");
         }
-        showAlert("Сыр добавлен");
       }
 
       setCheeseForm(emptyCheeseForm);
       setCheeseImageUrl("");
+      setNewCategoryForCheese({ name: "", description: "" });
+      setSelectedCategoryForCheeseIds([]);
+      setShowQuickProducer(false);
+      setShowQuickShop(false);
+      setShowNewCategoryForm(false);
+      setAdminModal(null);
       await loadAdminData();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const createProducerForCheese = async () => {
+    setError("");
+    try {
+      const payload = {
+        name: producerForm.name.trim(),
+        country: producerForm.country.trim(),
+        description: producerForm.description.trim()
+      };
+      if (!payload.name || !payload.country) {
+        throw new Error("Заполните название и страну производителя.");
+      }
+
+      const created = await apiRequest("/api/producers", {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+
+      if (created?.id) {
+        setProducers((prev) =>
+          [...prev, created].sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "", "ru", { sensitivity: "base" }))
+        );
+        setCheeseForm((prev) => ({ ...prev, producerId: String(created.id) }));
+      } else {
+        await loadAdminData();
+      }
+
+      setProducerForm(emptyProducerForm);
+      setShowQuickProducer(false);
+      showAlert("Производитель создан и выбран");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const createShopForCheese = async () => {
+    setError("");
+    try {
+      const payload = {
+        name: shopForm.name.trim(),
+        address: shopForm.address.trim(),
+        phone: shopForm.phone.trim()
+      };
+      if (!payload.name || !payload.address || !payload.phone) {
+        throw new Error("Заполните название, адрес и телефон магазина.");
+      }
+
+      const created = await apiRequest("/api/shops", {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+
+      if (created?.id) {
+        setShops((prev) => [...prev, created]);
+        setCheeseForm((prev) => ({ ...prev, shopId: String(created.id) }));
+      } else {
+        await loadAdminData();
+      }
+
+      setShopForm(emptyShopForm);
+      setShowQuickShop(false);
+      showAlert("Магазин создан и выбран");
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const addCategoryToExistingList = async () => {
+    const hostCheeseId = String(cheeses[0]?.id ?? "");
+    if (!hostCheeseId) {
+      showAlert("Сначала должен существовать хотя бы один сыр для привязки новой категории.");
+      return;
+    }
+    if (!newCategoryForCheese.name.trim()) {
+      showAlert("Введите название новой категории.");
+      return;
+    }
+    try {
+      const created = await apiRequest(`/api/categories/${hostCheeseId}`, {
+        method: "POST",
+        body: JSON.stringify({
+          name: newCategoryForCheese.name.trim(),
+          description: newCategoryForCheese.description.trim()
+        })
+      });
+
+      if (created?.id) {
+        setCategories((prev) => [...prev, created]);
+        setSelectedCategoryForCheeseIds((prev) => {
+          const createdId = String(created.id);
+          return prev.includes(createdId) ? prev : [...prev, createdId];
+        });
+      } else {
+        await loadAdminData();
+      }
+
+      setNewCategoryForCheese({ name: "", description: "" });
+      setShowNewCategoryForm(false);
+      showAlert("Категория добавлена и доступна в списке чекбоксов");
     } catch (err) {
       setError(err.message);
     }
@@ -548,6 +846,7 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
       });
       showAlert("Производитель добавлен");
       setProducerForm(emptyProducerForm);
+      setAdminModal(null);
       await loadAdminData();
     } catch (err) {
       setError(err.message);
@@ -568,6 +867,7 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
       });
       showAlert("Магазин добавлен");
       setShopForm(emptyShopForm);
+      setAdminModal(null);
       await loadAdminData();
     } catch (err) {
       setError(err.message);
@@ -590,6 +890,7 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
       });
       showAlert("Категория добавлена к сыру");
       setCategoryForm(emptyCategoryForm);
+      setAdminModal(null);
       await loadAdminData();
     } catch (err) {
       setError(err.message);
@@ -611,18 +912,35 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
     }));
   };
 
-  const startИзменитьCheese = (cheese) => {
+  const startИзменитьCheese = async (cheese) => {
     const currentOverride = imageOverrides[String(cheese.id)] ?? "";
+    let sourceCheese = cheese;
+
+    try {
+      const detailed = await apiRequest(`/api/cheeses/${cheese.id}`);
+      if (detailed?.id) {
+        sourceCheese = detailed;
+      }
+    } catch {
+      // fallback to data from list if detailed fetch fails
+    }
+
     setCheeseForm({
-      id: String(cheese.id),
-      name: cheese.name ?? "",
-      fats: cheese.fats ?? "",
-      description: cheese.description ?? "",
-      price: cheese.price ?? "",
-      producerId: String(cheese.producer?.id ?? ""),
-      shopId: ""
+      id: String(sourceCheese.id ?? cheese.id),
+      name: sourceCheese.name ?? "",
+      fats: sourceCheese.fats ?? "",
+      description: sourceCheese.description ?? "",
+      price: sourceCheese.price ?? "",
+      producerId: String(sourceCheese.producer?.id ?? ""),
+      shopId: String(sourceCheese.shop?.id ?? "")
     });
     setCheeseImageUrl(currentOverride);
+    setSelectedCategoryForCheeseIds((sourceCheese.categories ?? []).map((category) => String(category.id)));
+    setNewCategoryForCheese({ name: "", description: "" });
+    setShowQuickProducer(false);
+    setShowQuickShop(false);
+    setShowNewCategoryForm(false);
+    setAdminModal("cheese");
   };
 
   const deleteCheese = async (id) => {
@@ -638,7 +956,123 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
   return (
     <section className="layout admin">
       <div className="panel">
+        <h2>Панель администратора</h2>
+        <p className="state">Создание производителей, магазинов и управление сырами.</p>
+        {loading ? <p className="state">Загрузка...</p> : null}
+        {error ? <p className="state error">{error}</p> : null}
+
+        <div className="admin-tools">
+          <button
+            type="button"
+            onClick={() => {
+              setCheeseForm(emptyCheeseForm);
+              setCheeseImageUrl("");
+              setNewCategoryForCheese({ name: "", description: "" });
+              setSelectedCategoryForCheeseIds([]);
+              setShowQuickProducer(false);
+              setShowQuickShop(false);
+              setShowNewCategoryForm(false);
+              setAdminModal("cheese");
+            }}
+          >
+            Добавить сыр
+          </button>
+          <button
+            type="button"
+            className="ghost"
+            onClick={() => {
+              setProducerForm(emptyProducerForm);
+              setAdminModal("producer");
+            }}
+          >
+            Новый производитель
+          </button>
+          <button
+            type="button"
+            className="ghost"
+            onClick={() => {
+              setShopForm(emptyShopForm);
+              setAdminModal("shop");
+            }}
+          >
+            Новый магазин
+          </button>
+          <button
+            type="button"
+            className="ghost"
+            onClick={() => {
+              setCategoryForm(emptyCategoryForm);
+              setAdminModal("category");
+            }}
+          >
+            Новая категория
+          </button>
+        </div>
+      </div>
+
+      <div className="panel">
+        <h2>Управление сырами</h2>
+        <div className="admin-list">
+          {pagedCheeses.map((cheese) => (
+              <article key={cheese.id}>
+                <div>
+                  <h3>
+                    #{cheese.id} {cheese.name}
+                  </h3>
+                  <p>{cheese.description}</p>
+                  <p className="state">
+                    {Number(cheese.price || 0).toFixed(2)} BYN - {cheese.fats}% - {cheese.producer?.name ?? "Без производителя"}
+                  </p>
+                </div>
+                <div className="inline-actions">
+                  <button type="button" className="ghost" onClick={() => startИзменитьCheese(cheese)}>
+                    Изменить
+                  </button>
+                  <button type="button" className="danger" onClick={() => deleteCheese(cheese.id)}>
+                    Удалить
+                  </button>
+                </div>
+              </article>
+            ))}
+        </div>
+        <div className="shops-pagination-header">
+          <p className="state">
+            Страница {cheesesPage + 1} из {Math.max(cheesesTotalPages, 1)}
+          </p>
+          <div className="shops-pagination-actions">
+            <button
+              type="button"
+              className="ghost"
+              disabled={cheesesPageLoading || cheesesPage <= 0}
+              onClick={() => loadCheesesPage(Math.max(cheesesPage - 1, 0))}
+            >
+              Назад
+            </button>
+            <button
+              type="button"
+              className="ghost"
+              disabled={cheesesPageLoading || cheesesPage + 1 >= cheesesTotalPages}
+              onClick={() => loadCheesesPage(cheesesPage + 1)}
+            >
+              Вперед
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="panel">
         <h2>Список доступных магазинов</h2>
+        <div className="shops-grid">
+          {pagedShops.map((shop) => (
+            <article key={shop.id} className="shop-card">
+              <h3>
+                #{shop.id} {shop.name}
+              </h3>
+              <p>{shop.address}</p>
+              <p className="state">{shop.phone}</p>
+            </article>
+          ))}
+        </div>
         <div className="shops-pagination-header">
           <p className="state">
             Страница {shopsPage + 1} из {Math.max(shopsTotalPages, 1)}
@@ -662,236 +1096,359 @@ function AdminPanel({ showAlert, imageOverrides, saveImageOverride }) {
             </button>
           </div>
         </div>
-        <div className="shops-grid">
-          {pagedShops.map((shop) => (
-            <article key={shop.id} className="shop-card">
+      </div>
+
+      {adminModal ? (
+        <div className="modal-overlay" role="dialog" aria-modal="true">
+          <div className="modal-window">
+            <div className="modal-header">
               <h3>
-                #{shop.id} {shop.name}
+                {adminModal === "cheese"
+                  ? isИзменитьingCheese
+                    ? "Изменить сыр"
+                    : "Добавить сыр"
+                  : adminModal === "producer"
+                    ? "Новый производитель"
+                    : adminModal === "shop"
+                      ? "Новый магазин"
+                      : "Новая категория"}
               </h3>
-              <p>{shop.address}</p>
-              <p className="state">{shop.phone}</p>
-            </article>
-          ))}
-        </div>
-      </div>
+              <button type="button" className="ghost small" onClick={() => setAdminModal(null)}>
+                Закрыть
+              </button>
+            </div>
 
-      <div className="panel">
-        <h2>Панель администратора</h2>
-        <p className="state">Создание производителей, магазинов и управление сырами.</p>
-        {loading ? <p className="state">Загрузка...</p> : null}
-        {error ? <p className="state error">{error}</p> : null}
+            {adminModal === "producer" ? (
+              <form className="admin-form" onSubmit={createProducer}>
+                <label>
+                  Название
+                  <input
+                    value={producerForm.name}
+                    onChange={(event) => setProducerForm({ ...producerForm, name: event.target.value })}
+                    required
+                  />
+                </label>
+                <label>
+                  Страна
+                  <input
+                    value={producerForm.country}
+                    onChange={(event) => setProducerForm({ ...producerForm, country: event.target.value })}
+                    required
+                  />
+                </label>
+                <label className="full">
+                  Описание
+                  <textarea
+                    rows={3}
+                    value={producerForm.description}
+                    onChange={(event) => setProducerForm({ ...producerForm, description: event.target.value })}
+                  />
+                </label>
+                <div className="admin-actions">
+                  <button type="submit">Сохранить</button>
+                </div>
+              </form>
+            ) : null}
 
-        <div className="admin-grid">
-          <form className="admin-form compact" onSubmit={createProducer}>
-            <h3>Новый производитель</h3>
-            <input
-              placeholder="Название"
-              value={producerForm.name}
-              onChange={(event) => setProducerForm({ ...producerForm, name: event.target.value })}
-              required
-            />
-            <input
-              placeholder="Страна"
-              value={producerForm.country}
-              onChange={(event) => setProducerForm({ ...producerForm, country: event.target.value })}
-              required
-            />
-            <textarea
-              rows={2}
-              placeholder="Описание"
-              value={producerForm.description}
-              onChange={(event) => setProducerForm({ ...producerForm, description: event.target.value })}
-            />
-            <button type="submit">Добавить производителя</button>
-          </form>
+            {adminModal === "shop" ? (
+              <form className="admin-form" onSubmit={createShop}>
+                <label>
+                  Название магазина
+                  <input value={shopForm.name} onChange={(event) => setShopForm({ ...shopForm, name: event.target.value })} required />
+                </label>
+                <label>
+                  Адрес
+                  <input
+                    value={shopForm.address}
+                    onChange={(event) => setShopForm({ ...shopForm, address: event.target.value })}
+                    required
+                  />
+                </label>
+                <label className="full">
+                  Телефон
+                  <input value={shopForm.phone} onChange={(event) => setShopForm({ ...shopForm, phone: event.target.value })} required />
+                </label>
+                <div className="admin-actions">
+                  <button type="submit">Сохранить</button>
+                </div>
+              </form>
+            ) : null}
 
-          <form className="admin-form compact" onSubmit={createShop}>
-            <h3>Новый магазин</h3>
-            <input
-              placeholder="Название магазина"
-              value={shopForm.name}
-              onChange={(event) => setShopForm({ ...shopForm, name: event.target.value })}
-              required
-            />
-            <input
-              placeholder="Адрес"
-              value={shopForm.address}
-              onChange={(event) => setShopForm({ ...shopForm, address: event.target.value })}
-              required
-            />
-            <input
-              placeholder="Телефон"
-              value={shopForm.phone}
-              onChange={(event) => setShopForm({ ...shopForm, phone: event.target.value })}
-              required
-            />
-            <button type="submit">Добавить магазин</button>
-          </form>
+            {adminModal === "category" ? (
+              <form className="admin-form" onSubmit={createCategory}>
+                <label>
+                  Сыр
+                  <select
+                    value={categoryForm.cheeseId}
+                    onChange={(event) => setCategoryForm({ ...categoryForm, cheeseId: event.target.value })}
+                    required
+                  >
+                    <option value="">Выбрать сыр</option>
+                    {cheeses.map((cheese) => (
+                      <option key={cheese.id} value={cheese.id}>
+                        {cheese.id} - {cheese.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Шаблон категории
+                  <select
+                    value={categoryForm.categoryId}
+                    onChange={(event) => applyExistingCategoryTemplate(event.target.value)}
+                  >
+                    <option value="">Новая категория вручную</option>
+                    {uniqueCategories.map((category) => (
+                      <option key={category.id} value={category.id}>
+                        {category.id} - {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="full">
+                  Название категории
+                  <input
+                    value={categoryForm.name}
+                    onChange={(event) => setCategoryForm({ ...categoryForm, name: event.target.value })}
+                    required
+                  />
+                </label>
+                <label className="full">
+                  Описание категории
+                  <textarea
+                    rows={3}
+                    value={categoryForm.description}
+                    onChange={(event) => setCategoryForm({ ...categoryForm, description: event.target.value })}
+                  />
+                </label>
+                <div className="admin-actions">
+                  <button type="submit">Сохранить</button>
+                </div>
+              </form>
+            ) : null}
 
-          <form className="admin-form compact" onSubmit={createCategory}>
-            <h3>Новая категория</h3>
-            <select
-              value={categoryForm.cheeseId}
-              onChange={(event) => setCategoryForm({ ...categoryForm, cheeseId: event.target.value })}
-              required
-            >
-              <option value="">Выбрать сыр</option>
-              {cheeses.map((cheese) => (
-                <option key={cheese.id} value={cheese.id}>
-                  {cheese.id} - {cheese.name}
-                </option>
-              ))}
-            </select>
-            <select
-              value={categoryForm.categoryId}
-              onChange={(event) => applyExistingCategoryTemplate(event.target.value)}
-            >
-              <option value="">Новая категория вручную</option>
-              {uniqueCategories.map((category) => (
-                <option key={category.id} value={category.id}>
-                  {category.id} - {category.name}
-                </option>
-              ))}
-            </select>
-            <input
-              placeholder="Название категории"
-              value={categoryForm.name}
-              onChange={(event) => setCategoryForm({ ...categoryForm, name: event.target.value })}
-              required
-            />
-            <textarea
-              rows={2}
-              placeholder="Описание категории"
-              value={categoryForm.description}
-              onChange={(event) => setCategoryForm({ ...categoryForm, description: event.target.value })}
-            />
-            <button type="submit">Добавить категорию</button>
-          </form>
-        </div>
-      </div>
-
-      <div className="panel">
-        <h2>{isИзменитьingCheese ? "Изменить cheese" : "Добавить сыр"}</h2>
-        <form className="admin-form" onSubmit={saveCheese}>
-          <label>
-            Название
-            <input value={cheeseForm.name} onChange={(event) => setCheeseForm({ ...cheeseForm, name: event.target.value })} required />
-          </label>
-          <label>
-            Жирность
-            <input
-              type="number"
-              step="0.01"
-              value={cheeseForm.fats}
-              onChange={(event) => setCheeseForm({ ...cheeseForm, fats: event.target.value })}
-              required
-            />
-          </label>
-          <label className="full">
-            Описание
-            <textarea
-              rows={3}
-              value={cheeseForm.description}
-              onChange={(event) => setCheeseForm({ ...cheeseForm, description: event.target.value })}
-            />
-          </label>
-          <label>
-            Цена (BYN)
-            <input
-              type="number"
-              step="0.01"
-              value={cheeseForm.price}
-              onChange={(event) => setCheeseForm({ ...cheeseForm, price: event.target.value })}
-              required
-            />
-          </label>
-          <label className="full">
-            URL картинки (опционально)
-            <input
-              type="url"
-              placeholder="https://example.com/cheese.jpg"
-              value={cheeseImageUrl}
-              onChange={(event) => setCheeseImageUrl(event.target.value)}
-            />
-          </label>
-          <label>
-            Производитель (для создания)
-            <select
-              value={cheeseForm.producerId}
-              onChange={(event) => setCheeseForm({ ...cheeseForm, producerId: event.target.value })}
-              disabled={isИзменитьingCheese}
-            >
-              <option value="">Выбрать</option>
-              {producers.map((producer) => (
-                <option key={producer.id} value={producer.id}>
-                  {producer.id} - {producer.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Магазин (для создания)
-            <select
-              value={cheeseForm.shopId}
-              onChange={(event) => setCheeseForm({ ...cheeseForm, shopId: event.target.value })}
-              disabled={isИзменитьingCheese}
-            >
-              <option value="">Выбрать</option>
-              {shops.map((shop) => (
-                <option key={shop.id} value={shop.id}>
-                  {shop.id} - {shop.name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <div className="admin-actions">
-            <button type="submit">{isИзменитьingCheese ? "Сохранить изменения" : "Добавить сыр"}</button>
-            <button
-              type="button"
-              className="ghost"
-              onClick={() => {
-                setCheeseForm(emptyCheeseForm);
-                setCheeseImageUrl("");
-              }}
-            >
-              Очистить
-            </button>
-            <button type="button" className="ghost" onClick={loadAdminData}>
-              Обновить
-            </button>
+            {adminModal === "cheese" ? (
+              <form className="admin-form" onSubmit={saveCheese}>
+                <label>
+                  Название
+                  <input value={cheeseForm.name} onChange={(event) => setCheeseForm({ ...cheeseForm, name: event.target.value })} required />
+                </label>
+                <label>
+                  Жирность
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={cheeseForm.fats}
+                    onChange={(event) => setCheeseForm({ ...cheeseForm, fats: event.target.value })}
+                    required
+                  />
+                </label>
+                <label className="full">
+                  Описание
+                  <textarea
+                    rows={3}
+                    value={cheeseForm.description}
+                    onChange={(event) => setCheeseForm({ ...cheeseForm, description: event.target.value })}
+                  />
+                </label>
+                <label>
+                  Цена (BYN)
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={cheeseForm.price}
+                    onChange={(event) => setCheeseForm({ ...cheeseForm, price: event.target.value })}
+                    required
+                  />
+                </label>
+                <label className="full">
+                  URL картинки (опционально)
+                  <input
+                    type="url"
+                    placeholder="https://example.com/cheese.jpg"
+                    value={cheeseImageUrl}
+                    onChange={(event) => setCheeseImageUrl(event.target.value)}
+                  />
+                </label>
+                <label className="full">
+                  Производитель
+                  <select
+                    value={cheeseForm.producerId}
+                    onChange={(event) => setCheeseForm({ ...cheeseForm, producerId: event.target.value })}
+                  >
+                    <option value="">Выбрать</option>
+                    {producers.map((producer) => (
+                      <option key={producer.id} value={producer.id}>
+                        {producer.id} - {producer.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {!isИзменитьingCheese ? (
+                  <div className="full quick-create-wrap">
+                    <button
+                      type="button"
+                      className="ghost small quick-toggle"
+                      onClick={() => setShowQuickProducer((prev) => !prev)}
+                    >
+                      {showQuickProducer ? "Скрыть форму производителя" : "Создать производителя прямо здесь"}
+                    </button>
+                    {showQuickProducer ? (
+                      <div className="quick-create-grid">
+                        <input
+                          placeholder="Название производителя"
+                          value={producerForm.name}
+                          onChange={(event) => setProducerForm({ ...producerForm, name: event.target.value })}
+                        />
+                        <input
+                          placeholder="Страна"
+                          value={producerForm.country}
+                          onChange={(event) => setProducerForm({ ...producerForm, country: event.target.value })}
+                        />
+                        <textarea
+                          rows={2}
+                          placeholder="Описание"
+                          value={producerForm.description}
+                          onChange={(event) => setProducerForm({ ...producerForm, description: event.target.value })}
+                        />
+                        <button type="button" className="small" onClick={createProducerForCheese}>
+                          Создать и выбрать
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
+                <label className="full">
+                  Магазин
+                  <select
+                    value={cheeseForm.shopId}
+                    onChange={(event) => setCheeseForm({ ...cheeseForm, shopId: event.target.value })}
+                  >
+                    <option value="">Выбрать</option>
+                    {shops.map((shop) => (
+                      <option key={shop.id} value={shop.id}>
+                        {shop.id} - {shop.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                {!isИзменитьingCheese ? (
+                  <div className="full quick-create-wrap">
+                    <button
+                      type="button"
+                      className="ghost small quick-toggle"
+                      onClick={() => setShowQuickShop((prev) => !prev)}
+                    >
+                      {showQuickShop ? "Скрыть форму магазина" : "Создать магазин прямо здесь"}
+                    </button>
+                    {showQuickShop ? (
+                      <div className="quick-create-grid">
+                        <input
+                          placeholder="Название магазина"
+                          value={shopForm.name}
+                          onChange={(event) => setShopForm({ ...shopForm, name: event.target.value })}
+                        />
+                        <input
+                          placeholder="Адрес"
+                          value={shopForm.address}
+                          onChange={(event) => setShopForm({ ...shopForm, address: event.target.value })}
+                        />
+                        <input
+                          placeholder="Телефон"
+                          value={shopForm.phone}
+                          onChange={(event) => setShopForm({ ...shopForm, phone: event.target.value })}
+                        />
+                        <button type="button" className="small" onClick={createShopForCheese}>
+                          Создать и выбрать
+                        </button>
+                      </div>
+                    ) : null}
+                  </div>
+                ) : null}
+                <label className="full">
+                  <span className="category-section-title">
+                    Категории сыра
+                    <span className="category-count">Выбрано: {selectedCategoryForCheeseIds.length}</span>
+                  </span>
+                  <div className="category-checkbox-list">
+                    {uniqueCategories.map((category) => (
+                      <label
+                        key={category.id}
+                        className={
+                          selectedCategoryForCheeseIds.includes(String(category.id))
+                            ? "category-checkbox-item selected"
+                            : "category-checkbox-item"
+                        }
+                      >
+                        <input
+                          type="checkbox"
+                          checked={selectedCategoryForCheeseIds.includes(String(category.id))}
+                          onChange={(event) => {
+                            const categoryId = String(category.id);
+                            setSelectedCategoryForCheeseIds((prev) =>
+                              event.target.checked ? [...prev, categoryId] : prev.filter((id) => id !== categoryId)
+                            );
+                          }}
+                        />
+                        <span>{category.name}</span>
+                      </label>
+                    ))}
+                  </div>
+                </label>
+                {!isИзменитьingCheese ? (
+                  <>
+                    <div className="full quick-create-wrap">
+                      <button
+                        type="button"
+                        className="ghost small quick-toggle"
+                        onClick={() => setShowNewCategoryForm((prev) => !prev)}
+                      >
+                        {showNewCategoryForm ? "Скрыть форму новой категории" : "Создать новую категорию"}
+                      </button>
+                      {showNewCategoryForm ? (
+                        <div className="quick-create-grid">
+                          <label>
+                            Новая категория для этого сыра
+                            <input
+                              placeholder="Например: Твердый"
+                              value={newCategoryForCheese.name}
+                              onChange={(event) =>
+                                setNewCategoryForCheese((prev) => ({
+                                  ...prev,
+                                  name: event.target.value
+                                }))
+                              }
+                            />
+                          </label>
+                          <label>
+                            Описание категории (опционально)
+                            <textarea
+                              rows={2}
+                              value={newCategoryForCheese.description}
+                              onChange={(event) =>
+                                setNewCategoryForCheese((prev) => ({
+                                  ...prev,
+                                  description: event.target.value
+                                }))
+                              }
+                            />
+                          </label>
+                          <button type="button" className="small" onClick={addCategoryToExistingList}>
+                            Добавить категорию
+                          </button>
+                        </div>
+                      ) : null}
+                    </div>
+                  </>
+                ) : null}
+                <div className="admin-actions">
+                  <button type="submit">{isИзменитьingCheese ? "Сохранить изменения" : "Добавить сыр"}</button>
+                </div>
+              </form>
+            ) : null}
           </div>
-        </form>
-      </div>
-
-      <div className="panel">
-        <h2>Управление сырами</h2>
-        <div className="admin-list">
-          {cheeses
-            .slice()
-            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? ""))
-            .map((cheese) => (
-              <article key={cheese.id}>
-                <div>
-                  <h3>
-                    #{cheese.id} {cheese.name}
-                  </h3>
-                  <p>{cheese.description}</p>
-                  <p className="state">
-                    {Number(cheese.price || 0).toFixed(2)} BYN - {cheese.fats}% - {cheese.producer?.name ?? "Без производителя"}
-                  </p>
-                </div>
-                <div className="inline-actions">
-                  <button type="button" className="ghost" onClick={() => startИзменитьCheese(cheese)}>
-                    Изменить
-                  </button>
-                  <button type="button" className="danger" onClick={() => deleteCheese(cheese.id)}>
-                    Удалить
-                  </button>
-                </div>
-              </article>
-            ))}
         </div>
-      </div>
+      ) : null}
     </section>
   );
 }
