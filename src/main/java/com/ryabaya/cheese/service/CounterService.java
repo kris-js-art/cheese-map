@@ -35,9 +35,9 @@ public class CounterService { // класс для реализации всех
 
     public synchronized void incrementSynchronized() {
         synchronizedCounter++;
-    } // метод для увеличения synchronized счетчика на 1(в этом методе используется ключевое слово synchronized которое делает увеличение на 1 безопасным )
+    } // метод для увеличения synchronized счетчика на 1
 
     public int getSynchronizedValue() {
         return synchronizedCounter;
-    }// метод для получения значения synchronized счетчика
+    } // метод для получения значения synchronized счетчика
 }

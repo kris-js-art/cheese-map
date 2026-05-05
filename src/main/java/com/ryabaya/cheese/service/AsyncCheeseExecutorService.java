@@ -21,7 +21,8 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AsyncCheeseExecutorService {// сервис для выполнения асинхронной задачи
+// сервис для выполнения асинхронной задачи
+public class AsyncCheeseExecutorService {
 
     private final AsyncTaskStorage asyncTaskStorage;
     private final CheeseRepository cheeseRepository;
@@ -40,10 +41,14 @@ public class AsyncCheeseExecutorService {// сервис для выполнен
         task.setStatus(AsyncTaskStatus.IN_PROGRESS);
 
         try {
-            Shop shop = shopRepository.findById(shopId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Магазин не найден с id: " + shopId));
-            Producer producer = producerRepository.findById(producerId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Производитель не найден с id: " + producerId));
+            Shop shop = shopRepository.findById(shopId).orElseThrow(
+                    () -> new ResourceNotFoundException("Магазин не найден с id: " + shopId)
+            );
+            Producer producer = producerRepository.findById(producerId).orElseThrow(
+                    () -> new ResourceNotFoundException(
+                            "Производитель не найден с id: " + producerId
+                    )
+            );
             int total = cheeses.size();
 
             for (int i = 0; i < total; i++) {
@@ -77,7 +82,8 @@ public class AsyncCheeseExecutorService {// сервис для выполнен
         }
     }
 
-    private void sleepWithInterruptionHandling(AsyncTask task) { // метод для создания задержки после создания каждого сыра
+    private void sleepWithInterruptionHandling(AsyncTask task) {
+        // метод для создания задержки после создания каждого сыра
         try {
             Thread.sleep(6000);
         } catch (InterruptedException e) {
