@@ -32,7 +32,7 @@ public class CheeseCreationRequestDto {
     @Size(max = 1000, message = "Описание не должно превышать 1000 символов")
     private String description;
 
-    @Schema(description = "Цена в рублях", example = "1250.50", required = true)
+    @Schema(description = "Цена  в рублях", example = "1250.50", required = true)
     @NotNull(message = "Цена обязательна")
     @Positive(message = "Цена должна быть положительной")
     @DecimalMin(value = "0.01", message = "Цена должна быть не менее 0.01")
