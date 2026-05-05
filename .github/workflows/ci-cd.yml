@@ -156,6 +156,7 @@ jobs:
             --path-as-root frontend \
             --detach
 
+
   healthcheck:
     name: Post-deploy Healthcheck
     runs-on: ubuntu-latest
