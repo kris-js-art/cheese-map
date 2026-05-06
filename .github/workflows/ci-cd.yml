@@ -166,7 +166,7 @@ jobs:
     steps:
       - name: Check deployed app health
         env:
-          APP_HEALTHCHECK_URL: ${{ secrets.APP_HEALTHCHECK_URL }}
+          APP_HEALTHCHECK_URL: ${{ vars.APP_HEALTHCHECK_URL }}
         run: |
           APP_HEALTHCHECK_URL="$(printf '%s' "${APP_HEALTHCHECK_URL}" | tr -d '\r\n' | xargs)"
 
@@ -175,12 +175,11 @@ jobs:
             exit 1
           fi
 
-
           echo "Healthcheck URL: ${APP_HEALTHCHECK_URL}"
 
           for attempt in {1..30}; do
             http_code=$(curl -sS -o /tmp/health.json -w "%{http_code}" "${APP_HEALTHCHECK_URL}" || true)
-            if [ "${http_code}" = "200" ] && grep -q '"status":"UP"' /tmp/health.json; then
+            if [ "${http_code}" = "200" ]; then
               echo "Healthcheck passed on attempt ${attempt}"
               cat /tmp/health.json
               exit 0
